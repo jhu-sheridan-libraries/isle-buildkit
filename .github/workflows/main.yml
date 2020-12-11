@@ -33,9 +33,11 @@ jobs:
     - name: Build Docker images
       uses: eskatos/gradle-command-action@v1
       with:
+        # N.B. when projects are excluded from building (e.g '-x <project>:build'), they also need to be excluded from pushing, below (e.g. '-x <project>:push')
         arguments: build '-Prepository=${{ secrets.REPOSITORY }}' --info -x demo:build -x matomo:build -x recast:build -x milliner:build -x postgresql:build -x fcrepo:build -x blazegraph:build
     - name: Push Docker images
       uses: eskatos/gradle-command-action@v1
       with:
-        arguments: push '-Prepository=${{ secrets.REPOSITORY }}' '-PregistryUrl=${{ secrets.REGISTRY_URL }}' '-PregistryUsername=${{ secrets.REGISTRY_USER }}' '-PregistryPassword=${{ secrets.REGISTRY_PASS }}' --info
+        # N.B. when projects are excluded from building (e.g '-x <project>:build') above, they also need to be excluded from pushing (e.g. '-x <project>:push')
+        arguments: push '-Prepository=${{ secrets.REPOSITORY }}' '-PregistryUrl=${{ secrets.REGISTRY_URL }}' '-PregistryUsername=${{ secrets.REGISTRY_USER }}' '-PregistryPassword=${{ secrets.REGISTRY_PASS }}' --info -x demo:push -x matomo:push -x recast:push -x milliner:push -x postgresql:push -x fcrepo:push -x blazegraph:push
     # @todo add tests.
