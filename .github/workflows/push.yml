@@ -25,5 +25,6 @@ jobs:
     - name: Build Docker images
       uses: eskatos/gradle-command-action@v1
       with:
+        # N.B. when projects are excluded from building (e.g '-x <project>:build'), insure that other jobs (e.g. those in main.yml) are updated.
         arguments: build --info -x demo:build -x matomo:build -x recast:build -x milliner:build -x postgresql:build -x fcrepo:build -x blazegraph:build
     # @todo add tests.
