@@ -130,7 +130,9 @@ function main {
   $(installed_local) || db_count=$?
 
   # Install Composer modules if necessary.
-  COMPOSER_MEMORY_LIMIT=-1 composer install
+  if [ -z "${DRUPAL_SKIP_COMPOSER_INSTALL}" ] || [ "${DRUPAL_SKIP_COMPOSER_INSTALL}" != "true" ]; then
+    COMPOSER_MEMORY_LIMIT=-1 composer install
+  fi
 
   if [ -z "${db_count}" ] || [ "${db_count}" -lt 1 ] ; then
     printf "\n\nERROR: Drupal is not installed, no pre-existing state found\n\n"

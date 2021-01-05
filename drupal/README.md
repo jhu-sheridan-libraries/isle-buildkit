@@ -42,6 +42,12 @@ additional settings, volumes, ports, etc.
 | DRUPAL_DEFAULT_CONFIGDIR        | /drupal/default/configdir        |                         | Install using existing config files from directory        |
 | DRUPAL_DEFAULT_INSTALL          | /drupal/default/install          | true                    | Perform install if not already installed                  |
 
+IDC-specific startup values 
+| Environment Variable            | Etcd Key                         | Default                 | Description                                               |
+| :------------------------------ | :------------------------------- | :---------------------- | :-------------------------------------------------------- |
+| DRUPAL_IGNORE_STARTUP_ERRORS    | /drupal/ignore/startup/errors    |                         | If "true", drupal will not kill the startup process if it encounters an error |
+| DRUPAL_SKIP_COMPOSER_INSTALL    | /drupal/skip/composer/install    |                         | If "true", drupal will not attempt to run `composer install` as part of its startup procedure |
+
 Additional multi-sites can be defined by adding more environment variables,
 following the above conventions, only the `DRUPAL_SITE_{SITE}_NAME` is required
 to create an additional site:
