@@ -17,7 +17,7 @@ function execute_sql_file_local {
     local port=$(drupal_site_env "${site}" "DB_PORT")
     # must be root for the table count query to execute
     local user=root
-    local password=${MYSQL_ROOT_PASSWORD}
+    local password=${DRUPAL_DB_ROOT_PASSWORD}
 
     /usr/local/bin/execute-sql-file.sh \
         --driver "${driver}" \
