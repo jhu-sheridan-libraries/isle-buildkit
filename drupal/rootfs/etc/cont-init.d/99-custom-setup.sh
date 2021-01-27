@@ -118,10 +118,79 @@ function perform_runtime_config {
   update_settings_php "${site}"
 }
 
+# Regenerate / Update settings.php
+function idc_update_settings_php {
+    local site="${1}"; shift
+    local drupal_root=$(drush drupal:directory)
+    local site_url=$(drupal_site_env "${site}" "SITE_URL")
+    local driver=$(drupal_site_env "${site}" "DB_DRIVER")
+    local host=$(drupal_site_env "${site}" "DB_HOST")
+    local port=$(drupal_site_env "${site}" "DB_PORT")
+    local user=$(drupal_site_env "${site}" "DB_USER")
+    local password=$(drupal_site_env "${site}" "DB_PASSWORD")
+    local db_name=$(drupal_site_env "${site}" "DB_NAME")
+    local config_dir=$(drupal_site_env "${site}" "CONFIGDIR")
+    local fcrepo_host=$(drupal_site_env "${site}" "FCREPO_HOST")
+    local fcrepo_port=$(drupal_site_env "${site}" "FCREPO_PORT")
+    local salt=$(drupal_site_env "${site}" "SALT")
+    local subdir=$(drupal_site_env "${site}" "SUBDIR")
+    local site_directory=$(realpath "${drupal_root}/sites/${subdir}")
+    local install=$(drupal_site_env "${site}" "INSTALL")
+    local fedora_url=$(fedora_url "${site}")
+    local previous_owner_group=
+
+    # if [ "${install}" != "true" ]; then
+    #     echo "Skipping update of settings.php for site: $(capitalize "${site}")"
+    #     return 0
+    # fi
+
+    # Allow modifications to settings.php
+    if [ -f "${site_directory}/settings.php" ]; then
+        previous_owner_group=$(stat -c "%u:%g" "${site_directory}/settings.php")
+        chown 100:101 "${site_directory}/settings.php"
+        chmod a=rwx "${site_directory}/settings.php"
+    fi
+
+    drush -l "${site_url}" islandora:settings:create-settings-if-missing
+    drush -l "${site_url}" islandora:settings:set-hash-salt "${salt}"
+    drush -l "${site_url}" islandora:settings:set-flystem-fedora-url "${fedora_url}"
+    drush -l "${site_url}" islandora:settings:set-database-settings \
+        "${db_name}" \
+        "${user}" \
+        "${password}" \
+        "${host}" \
+        "${port}" \
+        "${driver}"
+
+    # Specifiying the config_dir is optional, some users will hardcode it in 
+    # their settings.php so it does not need updating.
+    if [ ! -z "${config_dir}" ]; then
+        drush -l "${site_url}" islandora:settings:set-config-sync-directory ${config_dir}
+    fi
+
+    # Restore owner/group to previous value
+    if [ ! -z "${previous_owner_group}" ]; then
+        chown "${previous_owner_group}" "${site_directory}/settings.php"
+    fi
+
+    # Restrict access to settings.php
+    chmod 444 "${site_directory}/settings.php"
+}
+
+
 function main {
   local site="default"
   local site_url=$(drupal_site_env "${site}" "SITE_URL")
 
+  if [ -n "${DRUPAL_INSTANCE}" ] && [ "${DRUPAL_INSTANCE}" != "dev" ] ;
+  then
+      idc_update_settings_php ${site}
+  fi
+
+  # If a site already exists, and we are not in the "dev" environment, perform a config import.
+  # If a site was newly installed by install_site above, the configuration import has already occurred as a
+  # part of the install process.
+  #
   # Records whether or not we are starting from an empty database; this is a proxy for determining if Drupal is
   # already installed or not.  If installed_custom returns 0, then Drupal is already installed.  If >0, Drupal is
   # not installed.
@@ -140,7 +209,7 @@ function main {
   # Enter maintenance mode, run any database hooks from updated modules,
   # import the configuration, and perform any runtime configuration affected by
   # environment variables.
-
+  cat /var/www/drupal/web/sites/default/settings.php
   # Go into maintenance mode
   enable_maint_mode ${site_url}
 
@@ -153,15 +222,16 @@ function main {
   #
   # This can't be done in dev, because a local developer's active config may be overwritten by the import.
   # But in promoting from dev to stage, or stage to prod, we will want the config to be overwritten.
-  if [ -n "${DRUPAL_INSTANCE}" ] && [ "${DRUPAL_INSTANCE}" != "dev" ] ;
-  then
-    perform_config_import "${site_url}"
-  fi
-
   # Perform runtime configuration if it is not a dev env.
   if [ -n "${DRUPAL_INSTANCE}" ] && [ "${DRUPAL_INSTANCE}" != "dev" ] ;
   then
-    perform_runtime_config "${site}"
+      perform_config_import "${site_url}"
+  fi
+  
+  
+  if [ -n "${DRUPAL_INSTANCE}" ] && [ "${DRUPAL_INSTANCE}" != "dev" ] ;
+  then
+      perform_runtime_config "${site}"
   fi
 
   # Disable maintenance mode
