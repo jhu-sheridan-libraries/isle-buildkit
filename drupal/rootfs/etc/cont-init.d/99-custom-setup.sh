@@ -52,7 +52,7 @@ function disable_maint_mode {
 function set_maint_mode {
   local site_url=$1
   local mode=$2
-  drush -y -l ${site_url} state:set system.maintenance_mode ${mode} --input-format=intege
+  drush -y -l ${site_url} state:set system.maintenance_mode ${mode} --input-format=integer
   drush -y -l ${site_url} cache:rebuild
 }
 
