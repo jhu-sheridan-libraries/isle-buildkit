@@ -31,7 +31,7 @@ function execute_sql_file_local {
 function mysql_count_local {
     echo "SELECT COUNT(DISTINCT table_name)
 FROM information_schema.columns
-WHERE table_schema = 'drupal_default';" > /tmp/moo
+WHERE table_schema = '$(drupal_site_env "${site}" "DB_NAME")';" > /tmp/moo
     execute_sql_file_local /tmp/moo -- -N 2>/dev/null
 }
 
@@ -52,7 +52,8 @@ function disable_maint_mode {
 function set_maint_mode {
   local site_url=$1
   local mode=$2
-  drush -y -l ${site_url} state:set system.maintenance_mode ${mode} --input-format=integer
+  drush status
+  drush -y -l ${site_url} state:set system.maintenance_mode ${mode} --input-format=integer --debug
   drush -y -l ${site_url} cache:rebuild
 }
 
