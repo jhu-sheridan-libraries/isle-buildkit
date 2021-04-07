@@ -15,6 +15,8 @@ sed -i "s/^-Xmx.*$/-Xmx$JETTY_MAX_HEAP/g" /opt/shib-jetty-base/start.ini
 
 confd -onetime -backend file -file /run/secrets/saml_secrets -sync-only
 
+export _SP_SIGNING_CERT=$(yq eval '.saml-secrets.sp.signing-cert' /run/secrets/saml_secrets | sed -e '/^-----*/d'|tr -d '\n')
+
 envsubst < /opt/shibboleth-idp/metadata/sp-metadata.xml > /tmp/sp-metadata.xml && cp /tmp/sp-metadata.xml /opt/shibboleth-idp/metadata/sp-metadata.xml
 envsubst < /opt/shibboleth-idp/metadata/idp-metadata.xml > /tmp/idp-metadata.xml && cp /tmp/idp-metadata.xml /opt/shibboleth-idp/metadata/idp-metadata.xml
 envsubst < /opt/shibboleth-idp/conf/attribute-filter.xml > /tmp/attribute-filter.xml && cp /tmp/attribute-filter.xml /opt/shibboleth-idp/conf/attribute-filter.xml
