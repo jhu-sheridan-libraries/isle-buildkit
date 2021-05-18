@@ -11,6 +11,8 @@
   <cm:property-placeholder id="properties" persistent-id="ca.islandora.alpaca.connector.homarus" update-strategy="reload" >
     <cm:default-properties>
       <cm:property name="error.maxRedeliveries" value="{{ getv "/homarus/redeliveries" "10" }}"/>
+      <cm:property name="error.redeliveryDelay" value="{{ getv "/homarus/redeliverydelay" "10000" }}"/>
+      <cm:property name="error.backoff" value="{{ getv "/homarus/redeliverybackoff" "1.0" }}"/>
       <cm:property name="in.stream" value="{{ getv "/homarus/queue" "broker:queue:islandora-connector-homarus" }}"/>
       <cm:property name="derivative.service.url" value="{{ getv "/homarus/service" "http://homarus:8000/convert" }}"/>
     </cm:default-properties>

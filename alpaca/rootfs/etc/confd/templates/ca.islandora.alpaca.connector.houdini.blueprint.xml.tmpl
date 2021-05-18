@@ -11,6 +11,8 @@
   <cm:property-placeholder id="properties" persistent-id="ca.islandora.alpaca.connector.houdini" update-strategy="reload" >
     <cm:default-properties>
       <cm:property name="error.maxRedeliveries" value="{{ getv "/houdini/redeliveries" "10" }}"/>
+      <cm:property name="error.redeliveryDelay" value="{{ getv "/houdini/redeliverydelay" "10000" }}"/>
+      <cm:property name="error.backoff" value="{{ getv "/houdini/redeliverybackoff" "1.0" }}"/>
       <cm:property name="in.stream" value="{{ getv "/houdini/queue" "broker:queue:islandora-connector-houdini" }}"/>
       <cm:property name="derivative.service.url" value="{{ getv "/houdini/service" "http://houdini:8000/convert" }}"/>
     </cm:default-properties>

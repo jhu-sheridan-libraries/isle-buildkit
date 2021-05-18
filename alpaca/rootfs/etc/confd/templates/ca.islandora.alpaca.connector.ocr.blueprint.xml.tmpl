@@ -11,6 +11,8 @@
   <cm:property-placeholder id="properties" persistent-id="ca.islandora.alpaca.connector.ocr" update-strategy="reload" >
     <cm:default-properties>
       <cm:property name="error.maxRedeliveries" value="{{ getv "/ocr/redeliveries" "10" }}"/>
+      <cm:property name="error.redeliveryDelay" value="{{ getv "/ocr/redeliverydelay" "10000" }}"/>
+      <cm:property name="error.backoff" value="{{ getv "/ocr/redeliverybackoff" "1.0" }}"/>
       <cm:property name="in.stream" value="{{ getv "/ocr/queue" "broker:queue:islandora-connector-ocr" }}"/>
       <cm:property name="derivative.service.url" value="{{ getv "/ocr/service" "http://hypercube:8000" }}"/>
     </cm:default-properties>
