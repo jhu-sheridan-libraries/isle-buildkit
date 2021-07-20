@@ -43,8 +43,10 @@ additional settings, volumes, ports, etc.
 | DRUPAL_DEFAULT_INSTALL          | /drupal/default/install          | true                    | Perform install if not already installed                  |
 | DRUPAL_FASTCGI_BUFFERS_NUMBER   | /drupal/fastcgi/buffers/number   | 8                       | nginx fastcgi_buffers number                              |
 | DRUPAL_FASTCGI_BUFFERS_SIZE     | /drupal/fastcgi/buffers/size     | 16k                     | nginx fastcgi_buffers size                                |
+| DRUPAL_FASTCGI_REQUEST_BUFFERING| /drupal/fastcgi/request/buffering| off                     | nginx fastcgi_request_buffering                           |
+| DRUPAL_FASTCGI_READ_TIMEOUT     | /drupal/fastcgi/read/timeout     | 300s                    | nginx fastcgi_read_timeout                                |
+| DRUPAL_FASTCGI_SEND_TIMEOUT     | /drupal/fastcgi/send/timeout     | 300s                    | nginx fastcgi_send_timeout                                |
 | DRUPAL_FASTCGI_BUFFER_SIZE      | /drupal/fastcgi/buffer/size      | 32k                     | nginx fastcgi_buffer size                                 |
-
 
 Additional multi-sites can be defined by adding more environment variables,
 following the above conventions, only the `DRUPAL_SITE_{SITE}_NAME` is required

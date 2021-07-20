@@ -116,6 +116,10 @@ server {
         # linked entities are added to Drupal metadata
         fastcgi_buffers {{getv "/fastcgi/buffers/number" "8"}}  {{getv "/fastcgi/buffers/size" "16k"}};
         fastcgi_buffer_size  {{getv "/fastcgi/buffer/size" "32k"}};
+
+        fastcgi_send_timeout  {{getv "/fastcgi/send/timeout" "300s"}};
+        fastcgi_read_timeout  {{getv "/fastcgi/read/timeout" "300s"}};
+        fastcgi_request_buffering  {{getv "/fastcgi/request/buffering" "off"}};
     }
 
     # Fighting with Styles? This little gem is amazing.
