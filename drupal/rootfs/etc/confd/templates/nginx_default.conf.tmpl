@@ -119,7 +119,6 @@ server {
 
         fastcgi_send_timeout  {{getv "/fastcgi/send/timeout" "300s"}};
         fastcgi_read_timeout  {{getv "/fastcgi/read/timeout" "300s"}};
-        fastcgi_request_buffering  {{getv "/fastcgi/request/buffering" "on"}};
     }
 
     # Fighting with Styles? This little gem is amazing.
