@@ -46,6 +46,10 @@ jobs:
       id: output-image-tag
       # Set the image tag, same used by the isle-gradle-docker-plugin
       run: echo ::set-output name=image-tag::$(git describe --tags --always --first-parent)
+    - name: dump env
+      env:
+        FOO: toJSON(env)
+      run: echo $FOO
     - name: Docker meta
       uses: docker/metadata-action@v3
       id: meta
