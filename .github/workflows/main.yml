@@ -53,8 +53,8 @@ jobs:
         tags: |
           type=raw,${{ steps.output-image-tag.outputs.image-tag }}
         labels: |
-          org.opencontainers.image.url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}
-          org.opencontainers.image.source=${GITHUB_REPOSITORY}
+          org.opencontainers.image.url=${{env.GITHUB_SERVER_URL}}/${{env.GITHUB_REPOSITORY}}
+          org.opencontainers.image.source=${{env.GITHUB_REPOSITORY}}
         images: ${{ secrets.REPOSITORY }}/activemq, ${{ secrets.REPOSITORY }}/alpaca, ${{ secrets.REPOSITORY }}/base, ${{ secrets.REPOSITORY }}/cantaloupe, ${{ secrets.REPOSITORY }}/crayfish, ${{ secrets.REPOSITORY }}/crayfits, ${{ secrets.REPOSITORY }}/drupal, ${{ secrets.REPOSITORY }}/drupal-dev, ${{ secrets.REPOSITORY }}/fits, ${{ secrets.REPOSITORY }}/homarus, ${{ secrets.REPOSITORY }}/houdini, ${{ secrets.REPOSITORY }}/hypercube, ${{ secrets.REPOSITORY }}/idp, ${{ secrets.REPOSITORY }}/ldap, ${{ secrets.REPOSITORY }}/mariadb, ${{ secrets.REPOSITORY }}/nginx, ${{ secrets.REPOSITORY }}/solr, ${{ secrets.REPOSITORY }}/tomcat, ${{ secrets.REPOSITORY }}/java, ${{ secrets.REPOSITORY }}/karaf
     - name: Output meta
       run: cat ${{ steps.meta.outputs.bake-file }}
