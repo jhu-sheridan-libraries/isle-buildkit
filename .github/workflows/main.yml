@@ -50,9 +50,9 @@ jobs:
       env:
         FOO: ${{ toJSON(env) }}
       run: echo $FOO
-    - name: dump github
+    - name: dump gh
       env:
-        BAR: ${{ toJSON(github} }}
+        BAR: ${{ toJSON(github) }}
       run: echo $BAR
     - name: Docker meta
       uses: docker/metadata-action@v3
