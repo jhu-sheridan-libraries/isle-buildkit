@@ -48,7 +48,7 @@ jobs:
       run: echo ::set-output name=image-tag::$(git describe --tags --always --first-parent)
     - name: dump env
       env:
-        FOO: toJSON(env)
+        FOO: ${{ toJSON(env) }}
       run: echo $FOO
     - name: Docker meta
       uses: docker/metadata-action@v3
