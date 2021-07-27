@@ -52,6 +52,7 @@ jobs:
       run: echo $FOO
     - name: dump gh
       env:
+        MOO: moo
         BAR: ${{ toJSON(github) }}
       run: echo $BAR
     - name: Docker meta
