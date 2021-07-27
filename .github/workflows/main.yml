@@ -39,46 +39,56 @@ jobs:
     - name: Build Docker images
       # N.B. when projects are excluded from building (e.g '-x <project>:build'), they also need to be excluded from pushing, below (e.g. '-x <project>:push')
       run: ./gradlew --console plain build '-Prepository=${{ secrets.REPOSITORY }}' -x demo:build -x matomo:build -x recast:build -x milliner:build -x postgresql:build -x fcrepo:build -x blazegraph:build
-    - name: Push Docker images
-      # N.B. when projects are excluded from building (e.g '-x <project>:build') above, they also need to be excluded from pushing (e.g. '-x <project>:push')
-      run: ./gradlew --console plain push '-Prepository=${{ secrets.REPOSITORY }}' '-PregistryUrl=${{ secrets.REGISTRY_URL }}' '-PregistryUsername=${{ secrets.REGISTRY_USER }}' '-PregistryPassword=${{ secrets.REGISTRY_PASS }}' -x demo:push -x matomo:push -x recast:push -x milliner:push -x postgresql:push -x fcrepo:push -x blazegraph:push
+#    - name: Push Docker images
+#      # N.B. when projects are excluded from building (e.g '-x <project>:build') above, they also need to be excluded from pushing (e.g. '-x <project>:push')
+#      run: ./gradlew --console plain push '-Prepository=${{ secrets.REPOSITORY }}' '-PregistryUrl=${{ secrets.REGISTRY_URL }}' '-PregistryUsername=${{ secrets.REGISTRY_USER }}' '-PregistryPassword=${{ secrets.REGISTRY_PASS }}' -x demo:push -x matomo:push -x recast:push -x milliner:push -x postgresql:push -x fcrepo:push -x blazegraph:push
     - name: Output image tag
       id: output-image-tag
       # Set the image tag, same used by the isle-gradle-docker-plugin
       run: echo ::set-output name=image-tag::$(git describe --tags --always --first-parent)
-  test:
-    name: Run idc-isle-dc Tests
-    needs: build
-    runs-on: ubuntu-latest
-    timeout-minutes: 120
-    defaults:
-      run:
-        working-directory: isle-dc
-    steps:
-      - name: Checkout idc-isle-dc
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          repository: jhu-idc/idc-isle-dc
-          path: isle-dc
-      - name: Set image tag
-        run: |
-          echo "Using image tag ${{needs.build.outputs.image-tag}}"
-          sed -i.bak -e 's@^TAG.*$@TAG=${{needs.build.outputs.image-tag}}@' .env
-          grep TAG .env
-      - name: Make static image
-        run: make static-docker-compose.yml
-      - name: Run smoke tests
-        run: make up test
-      - name: Capture Logs
-        if: failure()
-        run: |
-          mkdir -p end-to-end/reports
-          docker-compose logs drupal > end-to-end/reports/docker-drupal.log
-          docker-compose logs > end-to-end/reports/docker-allcontainers.log
-      - name: Upload Logs
-        if: failure()
-        uses: actions/upload-artifact@v2
-        with:
-          name: end-to-end-reports
-          path: isle-dc/end-to-end/reports
+    - name: Docker meta
+      uses: docker/metadata-action@v3
+      id: meta
+      with:
+        tags: |
+          type=edge
+          type=ref
+        images: ${{ secrets.REPOSITORY }}/activemq, ${{ secrets.REPOSITORY }}/alpaca, ${{ secrets.REPOSITORY }}/base, ${{ secrets.REPOSITORY }}/cantaloupe, ${{ secrets.REPOSITORY }}/crayfish, ${{ secrets.REPOSITORY }}/crayfits, ${{ secrets.REPOSITORY }}/drupal, ${{ secrets.REPOSITORY }}/drupal-dev, ${{ secrets.REPOSITORY }}/fits, ${{ secrets.REPOSITORY }}/homarus, ${{ secrets.REPOSITORY }}/houdini, ${{ secrets.REPOSITORY }}/hypercube, ${{ secrets.REPOSITORY }}/idp, ${{ secrets.REPOSITORY }}/ldap, ${{ secrets.REPOSITORY }}/mariadb, ${{ secrets.REPOSITORY }}/nginx, ${{ secrets.REPOSITORY }}/solr, ${{ secrets.REPOSITORY }}/tomcat, ${{ secrets.REPOSITORY }}/java, ${{ secrets.REPOSITORY }}/karaf
+    - name: Output meta
+      run: cat ${{ steps.meta.outputs.bake-file }}
+#  test:
+#    name: Run idc-isle-dc Tests
+#    needs: build
+#    runs-on: ubuntu-latest
+#    timeout-minutes: 120
+#    defaults:
+#      run:
+#        working-directory: isle-dc
+#    steps:
+#      - name: Checkout idc-isle-dc
+#        uses: actions/checkout@v2
+#        with:
+#          fetch-depth: 0
+#          repository: jhu-idc/idc-isle-dc
+#          path: isle-dc
+#      - name: Set image tag
+#        run: |
+#          echo "Using image tag ${{needs.build.outputs.image-tag}}"
+#          sed -i.bak -e 's@^TAG.*$@TAG=${{needs.build.outputs.image-tag}}@' .env
+#          grep TAG .env
+#      - name: Make static image
+#        run: make static-docker-compose.yml
+#      - name: Run smoke tests
+#        run: make up test
+#      - name: Capture Logs
+#        if: failure()
+#        run: |
+#          mkdir -p end-to-end/reports
+#          docker-compose logs drupal > end-to-end/reports/docker-drupal.log
+#          docker-compose logs > end-to-end/reports/docker-allcontainers.log
+#      - name: Upload Logs
+#        if: failure()
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: end-to-end-reports
+#          path: isle-dc/end-to-end/reports
