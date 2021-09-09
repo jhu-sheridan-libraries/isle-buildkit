@@ -3,11 +3,11 @@ FROM local/java:latest
 
 RUN --mount=id=downloads,type=cache,target=/opt/downloads \
     DOWNLOAD_CACHE_DIRECTORY="/opt/downloads" && \
-    TOMCAT_VERSION="9.0.41" && \
+    TOMCAT_VERSION="10.0.8" && \
     TOMCAT_FILE="apache-tomcat-${TOMCAT_VERSION}.tar.gz" && \
-    TOMCAT_URL="https://archive.apache.org/dist/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/${TOMCAT_FILE}" && \
-    TOMCAT_FILE_SHA256="6a5fc1f79f002f25480e3a50daa1fb16fdb2f0a969bc2f806c88bc550002cf71" && \
-    TOMCAT_SIG_SHA256="2bf8fe2b4a993b799a8ea6018bda46f05a00ba9931bf904c97b3e912e30d0b69" && \
+    TOMCAT_URL="https://archive.apache.org/dist/tomcat/tomcat-10/v${TOMCAT_VERSION}/bin/${TOMCAT_FILE}" && \
+    TOMCAT_FILE_SHA256="b1f85342bc5a5f30be4e1b5ed9aca8375412c564e8e8214523a6733d7237c07e" && \
+    TOMCAT_SIG_SHA256="22bf154cb53155edccae60f58c5796667dba31171a53a6ab5f695f134ddadf8c" && \
     download.sh --url "${TOMCAT_URL}" --sha256 "${TOMCAT_FILE_SHA256}" "${DOWNLOAD_CACHE_DIRECTORY}" && \
     download.sh --url "${TOMCAT_URL}.asc" --sha256 "${TOMCAT_SIG_SHA256}" "${DOWNLOAD_CACHE_DIRECTORY}" && \
     install-apache-service.sh \
