@@ -132,9 +132,9 @@ function main {
   # Install Composer modules if necessary.
   if [ -n "${DRUPAL_INSTANCE}" ] && [ "${DRUPAL_INSTANCE}" != "dev" ] ;
   then
-    COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-install=source
+    COMPOSER_MEMORY_LIMIT=-1 composer install 
   else
-    COMPOSER_MEMORY_LIMIT=-1 composer install
+    COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-install=source
   fi
 
   if [ -z "${db_count}" ] || [ "${db_count}" -lt 1 ] ; then
