@@ -134,7 +134,7 @@ function main {
   then
     COMPOSER_MEMORY_LIMIT=-1 composer install 
   else
-    COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-install=source
+    COMPOSER_MEMORY_LIMIT=-1 composer install --prefer-install=auto
   fi
 
   if [ -z "${db_count}" ] || [ "${db_count}" -lt 1 ] ; then
