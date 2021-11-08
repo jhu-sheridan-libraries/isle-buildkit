@@ -16,12 +16,6 @@ RUN --mount=id=downloads,type=cache,target=/opt/downloads \
     mkdir /opt/fits && \
     download.sh --url "${FITS_URL}" --sha256 "${FITS_SHA256}" "${DOWNLOAD_CACHE_DIRECTORY}" && \
     unzip "${DOWNLOAD_CACHE_DIRECTORY}/${FITS_FILE}" -d /opt/fits && \
-    rm -fr \
-        /opt/fits/lib/jna-* \
-        /opt/fits/tools/exiftool/perl/html \
-        /opt/fits/tools/exiftool/windows \
-        /opt/fits/tools/file_utility_windows \
-        /opt/fits/tools/mediainfo && \
     apk add \
         file \
         java-jna \
