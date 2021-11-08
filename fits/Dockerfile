@@ -15,6 +15,18 @@ RUN --mount=id=downloads,type=cache,target=/opt/downloads \
     FITS_SHA256="1378a78892db103b3a00e45c510b58c70e19a1a401b3720ff4d64a51438bfe0b" && \
     mkdir /opt/fits && \
     download.sh --url "${FITS_URL}" --sha256 "${FITS_SHA256}" "${DOWNLOAD_CACHE_DIRECTORY}" && \
-    unzip "${DOWNLOAD_CACHE_DIRECTORY}/${FITS_FILE}" -d /opt/fits
+    unzip "${DOWNLOAD_CACHE_DIRECTORY}/${FITS_FILE}" -d /opt/fits && \
+    rm -fr \
+        /opt/fits/lib/jna-* \
+        /opt/fits/tools/exiftool/perl/html \
+        /opt/fits/tools/exiftool/windows \
+        /opt/fits/tools/file_utility_windows \
+        /opt/fits/tools/mediainfo && \
+    apk add \
+        file \
+        java-jna \
+        libmediainfo \
+        libzen \
+        perl
 
 COPY rootfs /
