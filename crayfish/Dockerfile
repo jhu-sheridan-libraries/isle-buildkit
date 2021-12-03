@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:experimental
 FROM local/nginx:latest
 
-ARG COMMIT=8ad7a760564bd43d86e8ab1f49d4ff173cfda6b2
+ARG COMMIT=9521bfabaf09aa04617698f0c9f5b8d19a1dab61
 
 RUN --mount=id=downloads,type=cache,target=/opt/downloads \
     DOWNLOAD_CACHE_DIRECTORY="/opt/downloads" && \
