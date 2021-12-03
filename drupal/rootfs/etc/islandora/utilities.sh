@@ -77,7 +77,6 @@ function wait_for_required_services {
         wait_for_service "${site}" "SOLR"
         wait_for_service "${site}" "FCREPO"
         wait_for_service "${site}" "BROKER"
-        wait_for_service "${site}" "GEMINI"
         wait_for_service "${site}" "TRIPLESTORE"
     fi
 }
@@ -359,19 +358,10 @@ function configure_islandora_module {
     local broker_host=$(drupal_site_env "${site}" "BROKER_HOST")
     local broker_port=$(drupal_site_env "${site}" "BROKER_PORT")
     local broker_url="tcp://${broker_host}:${broker_port}"
-    local gemini_host=$(drupal_site_env "${site}" "GEMINI_HOST")
-    local gemini_port=$(drupal_site_env "${site}" "GEMINI_PORT")
-    local gemini_url="http://${gemini_host}:${gemini_port}"
 
     drush -l "${site_url}" -y pm:enable islandora
     drush -l "${site_url}" -y config:set --input-format=yaml jsonld.settings remove_jsonld_format true
     drush -l "${site_url}" -y config:set --input-format=yaml islandora.settings broker_url "${broker_url}"
-    drush -l "${site_url}" -y config:set --input-format=yaml islandora.settings gemini_url "${gemini_url}"
-    drush -l "${site_url}" -y config:set --input-format=yaml islandora.settings gemini_pseudo_bundles.0 "islandora_object:node"
-    drush -l "${site_url}" -y config:set --input-format=yaml islandora.settings gemini_pseudo_bundles.1 "image:media"
-    drush -l "${site_url}" -y config:set --input-format=yaml islandora.settings gemini_pseudo_bundles.2 "file:media"
-    drush -l "${site_url}" -y config:set --input-format=yaml islandora.settings gemini_pseudo_bundles.3 "audio:media"
-    drush -l "${site_url}" -y config:set --input-format=yaml islandora.settings gemini_pseudo_bundles.4 "video:media"
 }
 
 # After enabling and importing features a number of configurations need to be updated.

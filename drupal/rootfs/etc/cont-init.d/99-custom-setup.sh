@@ -67,12 +67,8 @@ function configure_islandora_module_local {
   local broker_host=$(drupal_site_env "${site}" "BROKER_HOST")
   local broker_port=$(drupal_site_env "${site}" "BROKER_PORT")
   local broker_url="tcp://${broker_host}:${broker_port}"
-  local gemini_host=$(drupal_site_env "${site}" "GEMINI_HOST")
-  local gemini_port=$(drupal_site_env "${site}" "GEMINI_PORT")
-  local gemini_url="http://${gemini_host}:${gemini_port}"
 
   drush -l "${site_url}" -y config:set --input-format=yaml islandora.settings broker_url "${broker_url}"
-  drush -l "${site_url}" -y config:set --input-format=yaml islandora.settings gemini_url "${gemini_url}"
 }
 
 function configure_islandora_default_module_local {

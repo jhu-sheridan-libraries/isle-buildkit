@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:experimental
 FROM local/nginx:latest
 
-ARG COMMIT=44eaba6613cf699594d707b13e124be73e85a996
+ARG COMMIT=8ad7a760564bd43d86e8ab1f49d4ff173cfda6b2
 
 RUN --mount=id=downloads,type=cache,target=/opt/downloads \
     DOWNLOAD_CACHE_DIRECTORY="/opt/downloads" && \
     git-clone-cached.sh \
-        --url https://github.com/Islandora/Crayfish.git \
+        --url https://github.com/jhu-idc/Crayfish.git \
         --cache-dir "${DOWNLOAD_CACHE_DIRECTORY}" \
         --commit "${COMMIT}" \
         --worktree /var/www/crayfish && \

@@ -17,7 +17,7 @@ Requires `islandora/base` docker image to build. Please refer to the
 
 > N.B. For all of the settings below images that descend from
 > ``islandora/nginx`` will apply prefix to every setting. So for example
-> `JWT_ADMIN_TOKEN` would become `GEMINI_JWT_ADMIN_TOKEN` this is to allow for
+> `JWT_ADMIN_TOKEN` would become `HOUDINI_JWT_ADMIN_TOKEN` this is to allow for
 > different settings on a per-service basis.
 
 ### Nginx Settings

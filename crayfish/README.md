@@ -21,7 +21,7 @@ additional settings, volumes, ports, etc.
 
 > N.B. For all of the settings below images that descend from
 > ``islandora/crayfish`` will apply prefix to every setting. So for example
-> `JWT_ADMIN_TOKEN` would become `GEMINI_JWT_ADMIN_TOKEN` this is to allow for
+> `JWT_ADMIN_TOKEN` would become `HOUDINI_JWT_ADMIN_TOKEN` this is to allow for
 > different settings on a per-service basis.
 
 | Environment Variable | Etcd Key         | Default   | Description |

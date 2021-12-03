@@ -168,7 +168,6 @@ The following docker images are provided:
 - [drupal](./drupal/README.md)
 - [fcrepo](./fcrepo/README.md)
 - [fits](./fits/README.md)
-- [gemini](./gemini/README.md)
 - [homarus](./homarus/README.md)
 - [houdini](./houdini/README.md)
 - [hypercube](./hypercube/README.md)
@@ -314,7 +313,6 @@ are arranged in a hierarchy, that roughly follows below:
     ├── mariadb
     └── nginx
         ├── crayfish
-        │   ├── gemini
         │   ├── homarus
         │   ├── houdini (consumes "imagemagick" as well during its build stage)
         │   ├── hypercube
