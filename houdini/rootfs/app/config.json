@@ -1,0 +1,20 @@
+{
+  "jwt": {
+    "handler-type": "JWTHandler",
+    "order": 30,
+    "requireTokens": true,
+    "verifyTokens": true
+  },
+  "convert": {
+    "handler-type": "ImageMagickHandler",
+    "order": 50,
+    "commandPath": "/usr/bin/convert",
+    "defaultMediaType": "image/jpeg",
+    "acceptedFormats": [
+      "image/jpeg",
+      "image/png",
+      "image/tiff",
+      "image/jp2"
+    ]
+  }
+}

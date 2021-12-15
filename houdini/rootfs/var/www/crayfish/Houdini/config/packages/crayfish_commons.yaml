@@ -1,3 +1,0 @@
-crayfish_commons:
-  syn_config: /var/www/crayfish/syn-settings.xml
-  syn_enabled: True

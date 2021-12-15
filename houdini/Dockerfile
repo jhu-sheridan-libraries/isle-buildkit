@@ -1,21 +1,29 @@
 # syntax=docker/dockerfile:experimental
-FROM local/imagemagick:latest as imagemagick
+FROM golang:1.17-alpine3.15 as build
 
-FROM local/crayfish:latest
+ARG REPO=https://github.com/jhu-idc/derivative-ms
+ARG COMMIT=6b85caad1c53b140597120a3cfdd87c55eb7015d
 
-RUN --mount=type=cache,target=/var/cache/apk \ 
-    --mount=type=cache,target=/etc/cache/apk \ 
-    --mount=type=bind,from=imagemagick,source=/home/builder/packages/x86_64,target=/packages \
-    --mount=type=bind,from=imagemagick,source=/etc/apk/keys,target=/etc/apk/keys \
-    --mount=type=cache,target=/root/.composer/cache \
-    apk add --allow-untrusted /packages/imagemagick-*.apk && \
-    composer install -d /var/www/crayfish/Houdini && \
-    php /var/www/crayfish/Houdini/bin/console cache:clear && \
-    ln -s /var/www/crayfish/Houdini/public /var/www/html && \
-    cleanup.sh
+WORKDIR /go/src/app
 
-COPY /rootfs /
+RUN apk add git && \
+    git clone ${REPO} . && \
+    git checkout ${COMMIT}
 
-RUN chown -R nginx:nginx /var/www
+RUN go get -d -v ./... && \
+    go install -v ./...
 
-WORKDIR /var/www/crayfish/Houdini/
+FROM alpine:3.15
+
+RUN apk add --no-cache \
+     imagemagick
+
+WORKDIR /app
+
+COPY --from=build /go/bin/derivative-ms ./derivative-ms
+
+COPY rootfs/ /
+
+ENTRYPOINT [ "./derivative-ms" ]
+
+CMD [ "-h" ]
