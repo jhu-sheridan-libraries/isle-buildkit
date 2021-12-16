@@ -3,7 +3,7 @@
     "handler-type": "JWTHandler",
     "order": 30,
     "requireTokens": true,
-    "verifyTokens": true
+    "verifyTokens": false
   },
   "convert": {
     "handler-type": "ImageMagickHandler",
