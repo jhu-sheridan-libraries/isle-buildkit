@@ -16,7 +16,11 @@ RUN --mount=type=cache,target=/root/.composer/cache \
     cd /var/www/drupal && \
     composer config repositories.1 '{"name": "islandora/chullo","type": "git","url": "https://github.com/Islandora/chullo.git","trunk-path" : "dev-dev#a7c1e051eab2a5077eaf5db2649201fa775c5a02"}' && \
     composer config repositories.1 --json '{"type": "package","package": {"name": "islandora/chullo","version": "dev-dev","type": "drupal-module","source": {"url": "https://github.com/Islandora/chullo.git","type": "git","reference": "a7c1e051eab2a5077eaf5db2649201fa775c5a02"}}}' && \
-    composer config --no-plugins allow-plugins.cweagans/composer-patches true
+    composer config --no-plugins allow-plugins.cweagans/composer-patches true && \
+    composer config --no-plugins allow-plugins.composer/installers true && \
+    composer config --no-plugins allow-plugins.drupal/core-composer-scaffold true && \
+    composer config --no-plugins allow-plugins.zaporylie/composer-drupal-optimizations true && \
+    composer config --no-plugins allow-plugins.drupal/console-extend-plugin true && \
     composer require --update-no-dev -- \
         drupal/admin_toolbar:^2.0 \
         drupal/console:~1.0 \
