@@ -12,7 +12,7 @@ RUN --mount=id=downloads,type=cache,target=/opt/downloads \
     download.sh --url "${SOLR_URL}.asc" --sha256 "${SOLR_SIG_SHA256}" "${DOWNLOAD_CACHE_DIRECTORY}" && \
     install-apache-service.sh \
         --name solr \
-        --key "3E48C0C6EF362B9E" \
+        --key "86EDB9C33B8517228E88A8F93E48C0C6EF362B9E" \
         --file "${DOWNLOAD_CACHE_DIRECTORY}/${SOLR_FILE}" \ 
         docs example licenses server/solr/configsets
 
