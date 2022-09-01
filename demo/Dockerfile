@@ -14,6 +14,9 @@ RUN --mount=type=cache,target=/root/.composer/cache \
         /var/www/drupal \
     && \
     cd /var/www/drupal && \
+    composer config repositories.1 '{"name": "islandora/chullo","type": "git","url": "https://github.com/Islandora/chullo.git","trunk-path" : "dev-dev#a7c1e051eab2a5077eaf5db2649201fa775c5a02"}' && \
+    composer config repositories.1 --json '{"type": "package","package": {"name": "islandora/chullo","version": "dev-dev","type": "drupal-module","source": {"url": "https://github.com/Islandora/chullo.git","type": "git","reference": "a7c1e051eab2a5077eaf5db2649201fa775c5a02"}}}' && \
+    composer config --no-plugins allow-plugins.cweagans/composer-patches true
     composer require --update-no-dev -- \
         drupal/admin_toolbar:^2.0 \
         drupal/console:~1.0 \
@@ -32,7 +35,7 @@ RUN --mount=type=cache,target=/root/.composer/cache \
         islandora/carapace:dev-8.x-3.x \
         islandora/islandora_defaults:dev-8.x-1.x \
         zaporylie/composer-drupal-optimizations:^1.0 \
-    && \
+        islandora/chullo:dev-dev && \
     mkdir -p /var/www/drupal/web/libraries && \
     MASONRY_VERSION="3.3.2" && \
     MASONRY_FILE="v${MASONRY_VERSION}.zip" && \
