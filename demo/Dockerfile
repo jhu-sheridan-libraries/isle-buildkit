@@ -66,7 +66,7 @@ RUN --mount=type=cache,target=/root/.composer/cache \
     mkdir -p /var/www/drupal/web/sites/default/files/library-definitions && \
     cp /var/www/drupal/web/modules/contrib/openseadragon/openseadragon.json /var/www/drupal/web/sites/default/files/library-definitions && \
     chown -R nginx:nginx /var/www/drupal && \
-    mkdir -p /tmp/drupal/tmp && chown -R 1000:nginx /tmp/drupal && chmod 775 /tmp/drupal/tmp && \
+    mkdir -p /tmp/drupal/tmp && chown -R nginx: /tmp/drupal && chmod -R 775 /tmp/drupal/tmp && \
     cleanup.sh
 
 FROM local/drupal:latest
