@@ -1,10 +1,14 @@
 # syntax=docker/dockerfile:experimental
+ARG ACTIVEMQ_VERSION="5.16.3"
+
 FROM local/java:latest as builder
+ARG ACTIVEMQ_VERSION
 
 COPY rootfs/heartbeat-interval.patch /
 
-RUN ACTIVEMQ_VERSION="5.16.3" && \
-    ACTIVEMQ_GIT_REPO="https://github.com/apache/activemq" && \
+RUN apk --no-cache add git
+
+RUN ACTIVEMQ_GIT_REPO="https://github.com/apache/activemq" && \
     ACTIVEMQ_GIT_TAG="activemq-${ACTIVEMQ_VERSION}" && \
     mkdir -p /opt/builds && \
     cd /opt/builds && \
@@ -31,13 +35,14 @@ RUN cd /opt/builds/activemq/assembly && \
 FROM local/java:latest
 
 RUN mkdir -p /opt/downloads
+ARG ACTIVEMQ_VERSION
 
-COPY --from=builder /opt/builds/activemq/assembly/target/apache-activemq-5.16.3-bin.tar.gz /opt/downloads
+COPY --from=builder /opt/builds/activemq/assembly/target/apache-activemq-${ACTIVEMQ_VERSION}-bin.tar.gz /opt/downloads
 
 # install-apache-service.sh modified to not require a signed artifact
 RUN install-apache-service.sh \
       --name activemq \
-      --file /opt/downloads/apache-activemq-5.16.3-bin.tar.gz \
+      --file /opt/downloads/apache-activemq-${ACTIVEMQ_VERSION}-bin.tar.gz \
     examples webapps-demo docs
 
 WORKDIR /opt/activemq
@@ -47,3 +52,4 @@ EXPOSE 61616 5672 61613 1883 61614 8161
 COPY rootfs /
 
 RUN chown -R activemq:activemq /opt/activemq
+RUN apk --no-cache add procps
