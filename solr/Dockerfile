@@ -3,7 +3,7 @@ FROM local/java:latest
 
 RUN --mount=id=downloads,type=cache,target=/opt/downloads \
     DOWNLOAD_CACHE_DIRECTORY="/opt/downloads" && \
-    SOLR_VERSION="8.11.1" && \
+    SOLR_VERSION="8.11.2" && \
     SOLR_FILE="solr-${SOLR_VERSION}.tgz" && \
     SOLR_URL="https://dlcdn.apache.org/lucene/solr/${SOLR_VERSION}/${SOLR_FILE}" && \
     SOLR_FILE_SHA256="9ec540cbd8e45f3d15a6b615a22939f5e6242ca81099951a47d3c082c79866a9" && \
