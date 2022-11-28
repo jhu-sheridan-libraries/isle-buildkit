@@ -7,7 +7,7 @@ RUN --mount=type=cache,target=/var/cache/apk \
         composer \
         nginx \
         gnu-libiconv \
-        php \
+        php7 \
         php-ctype \
         php-curl \
         php-dom \
