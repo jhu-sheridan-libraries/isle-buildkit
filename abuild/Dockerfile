@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM alpine:3.17
+FROM alpine:3.16
 
 
 RUN --mount=type=cache,target=/var/cache/apk \ 
