@@ -18,7 +18,7 @@ jobs:
       buildkit-commit: ${{ steps.establish-buildkit-head.outputs.buildkit-commit }}
     steps:
       - name: Checkout idc-isle-dc
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: jhu-idc/idc-isle-dc
           path: idc-isle-dc
@@ -28,7 +28,7 @@ jobs:
         run: echo "::set-output name=isledc-commit::$(git log -1 --format='%H')"
       - run: echo "Using idc-isle-dc ref ${{ steps.establish-isledc-head.outputs.isledc-commit }} for tests"
       - name: Checkout idc-isle-buildkit
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           # Required for generating the Docker image tag
           fetch-depth: 0
@@ -75,7 +75,7 @@ jobs:
           - solr
     steps:
       - name: Checkout idc-isle-buildkit
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           ref: ${{ needs.setup.outputs.buildkit-commit }}
@@ -123,7 +123,7 @@ jobs:
         working-directory: isle-dc
     steps:
       - name: Checkout idc-isle-dc
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: jhu-idc/idc-isle-dc
           ref: ${{ needs.setup.outputs.isledc-commit }}
@@ -170,7 +170,7 @@ jobs:
       matrix: ${{ steps.excludes-matrix.outputs.matrix }}
     steps:
       - name: Checkout idc-isle-dc
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: jhu-idc/idc-isle-dc
           ref: ${{ needs.setup.outputs.isledc-commit }}
@@ -197,7 +197,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Checkout idc-isle-dc
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: jhu-idc/idc-isle-dc
           ref: ${{ needs.setup.outputs.isle-dccommit }}
