@@ -88,7 +88,7 @@ jobs:
         run: |
           echo '{"experimental": "enabled"}' > ~/.docker/config.json
       - name: Build & Push Image
-        run: ./gradlew --console plain -PregistryUrl=${{ secrets.REGISTRY_URL }} -PregistryUsername=${{ secrets.REGISTRY_USER }} -PregistryPassword=${{ secrets.REGISTRY_PASS }} -Prepository=${{ secrets.REPOSITORY }} ${{ matrix.image-name }}:push
+        run: ./gradlew --warning-mode all --console plain -PregistryUrl=${{ secrets.REGISTRY_URL }} -PregistryUsername=${{ secrets.REGISTRY_USER }} -PregistryPassword=${{ secrets.REGISTRY_PASS }} -Prepository=${{ secrets.REPOSITORY }} ${{ matrix.image-name }}:push
       - name: Label Image
         run: |
           if [ "${{github.event_name}}" == "pull_request" ] ; then
