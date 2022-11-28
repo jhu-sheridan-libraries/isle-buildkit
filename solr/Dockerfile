@@ -6,8 +6,8 @@ RUN --mount=id=downloads,type=cache,target=/opt/downloads \
     SOLR_VERSION="8.11.2" && \
     SOLR_FILE="solr-${SOLR_VERSION}.tgz" && \
     SOLR_URL="https://dlcdn.apache.org/lucene/solr/${SOLR_VERSION}/${SOLR_FILE}" && \
-    SOLR_FILE_SHA256="9ec540cbd8e45f3d15a6b615a22939f5e6242ca81099951a47d3c082c79866a9" && \
-    SOLR_SIG_SHA256="6a1eca93d0d0a80647cb60063f5e46347350b03a0f75b6a662d1b0a4746dabba" && \
+    SOLR_FILE_SHA256="54d6ebd392942f0798a60d50a910e26794b2c344ee97c2d9b50e678a7066d3a6" && \
+    SOLR_SIG_SHA256="1dc449783b89ae9287d1e31db0514d62aeb6edce199d541a29303e8d5c98d31e" && \
     download.sh --url "${SOLR_URL}" --sha256 "${SOLR_FILE_SHA256}" "${DOWNLOAD_CACHE_DIRECTORY}" && \
     download.sh --url "${SOLR_URL}.asc" --sha256 "${SOLR_SIG_SHA256}" "${DOWNLOAD_CACHE_DIRECTORY}" && \
     install-apache-service.sh \
