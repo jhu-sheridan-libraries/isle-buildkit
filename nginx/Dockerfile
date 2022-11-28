@@ -7,41 +7,41 @@ RUN --mount=type=cache,target=/var/cache/apk \
         composer \
         nginx \
         gnu-libiconv \
-        php7 \
-        php7-ctype \
-        php7-curl \
-        php7-dom \
-        php7-fileinfo \
-        php7-fpm \
-        php7-gd \
-        php7-iconv \
-        php7-intl \
-        php7-json \
-        php7-ldap \
-        php7-mbstring \
-        php7-mysqli \
-        php7-opcache \
-        php7-openssl \
-        php7-pdo \
-        php7-pdo_mysql \
-        php7-pdo_pgsql \
-        php7-pdo_sqlite \
-        php7-phar \
-        php7-session \
-        php7-simplexml \
-        php7-sqlite3 \
-        php7-tokenizer \
-        php7-xml \
-        php7-xmlwriter \
-        php7-xmlreader \
-        php7-xsl \
-        php7-yaml \
-        php7-zip \
+        php81 \
+        php81-ctype \
+        php81-curl \
+        php81-dom \
+        php81-fileinfo \
+        php81-fpm \
+        php81-gd \
+        php81-iconv \
+        php81-intl \
+        php81-json \
+        php81-ldap \
+        php81-mbstring \
+        php81-mysqli \
+        php81-opcache \
+        php81-openssl \
+        php81-pdo \
+        php81-pdo_mysql \
+        php81-pdo_pgsql \
+        php81-pdo_sqlite \
+        php81-phar \
+        php81-session \
+        php81-simplexml \
+        php81-sqlite3 \
+        php81-tokenizer \
+        php81-xml \
+        php81-xmlwriter \
+        php81-xmlreader \
+        php81-xsl \
+        php81-pecl-yaml \
+        php81-zip \
     && \
     composer self-update --2 && \
     cleanup.sh
 
-RUN apk add gnu-libiconv=1.15-r3 --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.13/community/ --allow-untrusted
+RUN apk add gnu-libiconv=1.17-r0 --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.16/community/ --allow-untrusted
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
 
 COPY rootfs /
