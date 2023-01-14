@@ -1,6 +1,6 @@
 # Solr
 
-Docker image for [Solr] version 7.1.0.
+Docker image for [Solr] version 8.11.2.
 
 Please refer to the [Solr Documentation] for more in-depth information.
 
@@ -35,6 +35,6 @@ additional settings, volumes, ports, etc.
 | :----------------------------- | :------------- |
 | /opt/solr/server/logs/solr.log | [Solr Logging] |
 
-[Solr Documentation]: https://lucene.apache.org/solr/guide/7_1/
-[Solr Logging]: https://lucene.apache.org/solr/guide/7_1/configuring-logging.html
+[Solr Documentation]: https://lucene.apache.org/solr/guide/8_11/
+[Solr Logging]: https://lucene.apache.org/solr/guide/8_11/configuring-logging.html
 [Solr]: https://lucene.apache.org/solr/

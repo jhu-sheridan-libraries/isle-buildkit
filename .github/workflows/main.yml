@@ -97,7 +97,7 @@ jobs:
             export IMAGE_DESC="IDC ${{matrix.image-name}} image (via idc-isle-buildkit commit ${{ github.sha }})"
           fi
           echo "FROM ${{ secrets.REPOSITORY }}/${{matrix.image-name}}:${{needs.setup.outputs.image-tag}}" | \
-          docker build -t ${{ secrets.REPOSITORY }}/${{matrix.image-name}}:${{needs.setup.outputs.image-tag}} \
+          docker build --network=host -t ${{ secrets.REPOSITORY }}/${{matrix.image-name}}:${{needs.setup.outputs.image-tag}} \
             --label org.opencontainers.image.title="idc-isle-buildkit ${{matrix.image-name}}"\
             --label org.opencontainers.image.description="${IMAGE_DESC}" \
             --label org.opencontainers.image.url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/tree/${{github.event.repository.default_branch}}/${{matrix.image-name}} \
@@ -146,7 +146,7 @@ jobs:
           fi
           export STATIC_TAG=$(docker images | grep ${{ secrets.REPOSITORY }}/drupal-static | awk '{print $2}')
           echo "FROM ${{ secrets.REPOSITORY }}/drupal-static:${STATIC_TAG}" | \
-          docker build -t ${{ secrets.REPOSITORY }}/drupal-static:${{needs.setup.outputs.image-tag}} \
+          docker build --network=host -t ${{ secrets.REPOSITORY }}/drupal-static:${{needs.setup.outputs.image-tag}} \
             --label org.opencontainers.image.title="idc-isle-buildkit drupal-static" \
             --label org.opencontainers.image.description="${IMAGE_DESC}" \
             --label org.opencontainers.image.url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/tree/${{github.event.repository.default_branch}}/drupal \

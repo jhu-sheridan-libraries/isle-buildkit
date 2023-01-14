@@ -5,6 +5,7 @@ FROM local/nginx:latest as composer
 RUN --mount=type=cache,target=/root/.composer/cache \
     --mount=id=downloads,type=cache,target=/opt/downloads \
     DOWNLOAD_CACHE_DIRECTORY="/opt/downloads" && \
+    mkdir -p /tmp/drupal/tmp && chown -R nginx: /tmp/drupal && chmod -R 775 /tmp/drupal/tmp && \
     composer create-project islandora/drupal-project:8.8.1 \
         --prefer-dist \
         --no-interaction \
@@ -14,7 +15,18 @@ RUN --mount=type=cache,target=/root/.composer/cache \
         /var/www/drupal \
     && \
     cd /var/www/drupal && \
-    composer require --update-no-dev -- \
+    mkdir -p /var/www/drupal/web/modules/contrib && \
+    composer config extra.installer-paths --json '{"sites/all/modules/contrib/{$name}/": ["type:drupal-module"]}' && \
+    composer config --no-plugins allow-plugins.cweagans/composer-patches true && \
+    composer config --no-plugins allow-plugins.composer/installers true && \
+    composer config --no-plugins allow-plugins.drupal/core-composer-scaffold true && \
+    composer config --no-plugins allow-plugins.zaporylie/composer-drupal-optimizations true && \
+    composer config --no-plugins allow-plugins.drupal/console-extend-plugin true && \
+    composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true && \
+    composer config repositories.1 '{"name": "islandora/chullo","type": "git","url": "https://github.com/Islandora/chullo.git","trunk-path" : "dev-dev#a7c1e051eab2a5077eaf5db2649201fa775c5a02"}' && \
+    composer config repositories.1 --json '{"type": "package","package": {"name": "islandora/chullo","version": "dev-dev","type": "drupal-module","source": {"url": "https://github.com/Islandora/chullo.git","type": "git","reference": "a7c1e051eab2a5077eaf5db2649201fa775c5a02","canonical": false}}}' && \
+    composer require "islandora/chullo:dev-dev as 1.x-dev" && \
+    composer require --no-update -- \
         drupal/admin_toolbar:^2.0 \
         drupal/console:~1.0 \
         drupal/content_browser:^1.0@alpha \
@@ -31,8 +43,8 @@ RUN --mount=type=cache,target=/root/.composer/cache \
         islandora-rdm/islandora_fits:dev-master \
         islandora/carapace:dev-8.x-3.x \
         islandora/islandora_defaults:dev-8.x-1.x \
-        zaporylie/composer-drupal-optimizations:^1.0 \
-    && \
+        islandora/openseadragon:dev-8.x-1.x \
+        zaporylie/composer-drupal-optimizations:^1.0 && \
     mkdir -p /var/www/drupal/web/libraries && \
     MASONRY_VERSION="3.3.2" && \
     MASONRY_FILE="v${MASONRY_VERSION}.zip" && \
@@ -40,7 +52,7 @@ RUN --mount=type=cache,target=/root/.composer/cache \
     MASONRY_SHA256="85dc8b2cdf789693a14022dadc3e573a87d625da5da1cf83e1ef1e5af22af496" && \
     download.sh --url "${MASONRY_URL}" --sha256 "${MASONRY_SHA256}" "${DOWNLOAD_CACHE_DIRECTORY}" && \
     unzip "${DOWNLOAD_CACHE_DIRECTORY}/${MASONRY_FILE}" -d /var/www/drupal/web/libraries && \
-    mv  /var/www/drupal/web/libraries/masonry-${MASONRY_VERSION} /var/www/drupal/web/libraries/masonry && \
+    mv /var/www/drupal/web/libraries/masonry-${MASONRY_VERSION} /var/www/drupal/web/libraries/masonry && \
     PDFJS_VERSION="2.0.943" && \
     PDFJS_FILE="pdfjs-${PDFJS_VERSION}-dist.zip" && \
     PDFJS_URL="https://github.com/mozilla/pdf.js/releases/download/v${PDFJS_VERSION}/${PDFJS_FILE}" && \
@@ -57,12 +69,14 @@ RUN --mount=type=cache,target=/root/.composer/cache \
     unzip "${DOWNLOAD_CACHE_DIRECTORY}/${OPENSEADRAGON_FILE}" -d /var/www/drupal/web/sites/all/assets/vendor && \
     mv "/var/www/drupal/web/sites/all/assets/vendor/${OPENSEADRAGON_FILE%.zip}" /var/www/drupal/web/sites/all/assets/vendor/openseadragon && \
     mkdir -p /var/www/drupal/web/sites/default/files/library-definitions && \
-    cp /var/www/drupal/web/modules/contrib/openseadragon/openseadragon.json /var/www/drupal/web/sites/default/files/library-definitions && \
+    curl https://raw.githubusercontent.com/Islandora/openseadragon/8.x-1.x/openseadragon.json -o /var/www/drupal/web/sites/default/files/library-definitions/openseadragon.json && \
+    # Something is wrong with where composer is installing modules.
+    # cp /var/www/drupal/web/modules/contrib/openseadragon/openseadragon.json /var/www/drupal/web/sites/default/files/library-definitions && \
     chown -R nginx:nginx /var/www/drupal && \
     cleanup.sh
 
 FROM local/drupal:latest
-
+RUN apk --no-cache add procps
 COPY --chown=nginx:nginx --from=composer /var/www/drupal /var/www/drupal
 
 COPY rootfs /
