@@ -8,40 +8,40 @@ RUN --mount=type=cache,target=/var/cache/apk \
         nginx \
         gnu-libiconv \
         php7 \
-        php7-ctype \
-        php7-curl \
-        php7-dom \
-        php7-fileinfo \
-        php7-fpm \
-        php7-gd \
-        php7-iconv \
-        php7-intl \
-        php7-json \
-        php7-ldap \
-        php7-mbstring \
-        php7-mysqli \
-        php7-opcache \
-        php7-openssl \
-        php7-pdo \
-        php7-pdo_mysql \
-        php7-pdo_pgsql \
-        php7-pdo_sqlite \
-        php7-phar \
-        php7-session \
-        php7-simplexml \
-        php7-sqlite3 \
-        php7-tokenizer \
-        php7-xml \
-        php7-xmlwriter \
-        php7-xmlreader \
-        php7-xsl \
-        php7-yaml \
-        php7-zip \
+        php-ctype \
+        php-curl \
+        php-dom \
+        php-fileinfo \
+        php-fpm \
+        php-gd \
+        php-iconv \
+        php-intl \
+        php-json \
+        php-ldap \
+        php-mbstring \
+        php-mysqli \
+        php-opcache \
+        php-openssl \
+        php-pdo \
+        php-pdo_mysql \
+        php-pdo_pgsql \
+        php-pdo_sqlite \
+        php-phar \
+        php-session \
+        php-simplexml \
+        php-sqlite3 \
+        php-tokenizer \
+        php-xml \
+        php-xmlwriter \
+        php-xmlreader \
+        php-xsl \
+        php7-pecl-yaml \
+        php-zip \
     && \
     composer self-update --2 && \
     cleanup.sh
 
-RUN apk add gnu-libiconv=1.15-r3 --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.13/community/ --allow-untrusted
+RUN apk add gnu-libiconv=1.16-r0 --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.15/community/ --allow-untrusted
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
 
 COPY rootfs /

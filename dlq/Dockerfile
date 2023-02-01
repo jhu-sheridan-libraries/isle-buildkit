@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM golang:1.17-alpine3.15 as build
+FROM golang:1.19.3-alpine3.15 as build
 
 ARG REPO=https://github.com/jhu-idc/derivative-ms
 ARG COMMIT=a4a9d0d61506057be1e3b8bc040a808b79d99592
