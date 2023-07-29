@@ -13,7 +13,7 @@ RUN apk add git && \
 RUN go get -d -v ./... && \
     go install -v ./...
 
-FROM alpine:3.15
+FROM alpine:3.16
 
 WORKDIR /app
 
